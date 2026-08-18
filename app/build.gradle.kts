@@ -47,6 +47,7 @@ dependencies {
 
     implementation("io.sf.carte:css4j:6.2")
 
+    testImplementation(kotlin("test"))
 }
 
 val nativeDependencyScope = configurations.dependencyScope("nativeDependencies")

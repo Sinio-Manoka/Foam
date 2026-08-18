@@ -17,14 +17,20 @@ import com.foam.app.dsl.ViewScope
  *     ViewScope.Text("Continue", "label")
  * }
  * ```
+ *
+ * Implementation note: the function name (`Button`) and the underlying
+ * node class ([ButtonNode]) deliberately do not share a name. Inside
+ * the function body the bare identifier `Button()` resolves to the
+ * extension function (via the implicit `ViewScope` receiver), not to
+ * a constructor — so the underlying class is called `ButtonNode`.
  */
 fun ViewScope.Button(
     vararg classNames: String,
     content: ViewScope.() -> Unit = {}
-): Button {
+): ButtonNode {
 
     val node =
-        Button()
+        ButtonNode()
 
     node.classes += classNames
 
@@ -38,8 +44,11 @@ fun ViewScope.Button(
 
 
 /**
- * The node type for `Button`. Currently a thin marker — components grow
- * state (e.g. `checked`, `pressed`, focus ring tracking) by adding
- * properties here.
+ * The node type for `Button`. Components grow state (e.g. `checked`,
+ * `pressed`, focus-ring tracking) by adding properties here.
+ *
+ * Renamed from `Button` to `ButtonNode` to avoid colliding with the
+ * `ViewScope.Button` extension function. The DSL name `Button(...)`
+ * is what users type; the class name `ButtonNode` is internal.
  */
-class Button : Component("button")
+open class ButtonNode : Component("button")

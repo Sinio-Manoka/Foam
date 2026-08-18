@@ -14,14 +14,20 @@ import com.foam.app.dsl.ViewScope
  *     ViewScope.Text("Hello", "label")
  * }
  * ```
+ *
+ * Implementation note: the function name (`VStack`) and the underlying
+ * node class ([VStackNode]) deliberately do not share a name. Inside
+ * the function body the bare identifier `VStack()` resolves to the
+ * extension function (via the implicit `ViewScope` receiver), not to
+ * a constructor — so the underlying class is called `VStackNode`.
  */
 fun ViewScope.VStack(
     vararg classNames: String,
     content: ViewScope.() -> Unit = {}
-): VStack {
+): VStackNode {
 
     val node =
-        VStack()
+        VStackNode()
 
     node.classes += classNames
 
@@ -37,4 +43,4 @@ fun ViewScope.VStack(
 /**
  * The node type for `VStack`. Currently a thin marker.
  */
-class VStack : Component("vstack")
+open class VStackNode : Component("vstack")
