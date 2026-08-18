@@ -6,6 +6,7 @@ interface LayoutEngine {
     fun layout(
         root: Node,
         width: Float,
-        height: Float
+        height: Float,
+        scale: Float
     )
 }

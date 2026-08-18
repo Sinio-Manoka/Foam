@@ -1,0 +1,33 @@
+.window {
+    width: 900px;
+    height: 600px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    width: 200px;
+}
+
+.primary {
+    background-color: #008CBA;
+}
+
+.secondary {
+    background-color: #af52de;
+}
+
+.button-label {
+    font-size: 16px;
+    color: #ffffff;
+}

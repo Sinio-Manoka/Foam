@@ -4,19 +4,29 @@ import com.foam.app.core.geometry.LayoutRect
 import com.foam.app.style.ComputedStyle
 
 abstract class Node {
+
     var parent: Node? = null
 
-    val children = mutableListOf<Node>()
+    val children =
+        mutableListOf<Node>()
 
-    val classes = mutableListOf<String>()
+    val classes =
+        mutableListOf<String>()
 
     var id: String? = null
 
-    var layout = LayoutRect()
+    var layout =
+        LayoutRect()
 
-    var computedStyle = ComputedStyle()
+    var computedStyle =
+        ComputedStyle()
 
-    fun add(child: Node) {
+    var inlineStyle =
+        ComputedStyle()
+
+    fun add(
+        child: Node
+    ) {
         child.parent = this
         children += child
     }

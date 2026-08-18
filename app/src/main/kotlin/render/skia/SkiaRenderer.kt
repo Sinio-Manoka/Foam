@@ -2,17 +2,25 @@ package com.foam.app.render.skia
 
 import com.foam.app.core.node.ElementNode
 import com.foam.app.core.node.Node
+import com.foam.app.core.node.TextNode
 import com.foam.app.render.Renderer
+import com.foam.app.text.TextEngine
+
 import org.jetbrains.skia.Canvas
 import org.jetbrains.skia.Paint
 import org.jetbrains.skia.RRect
 
-class SkiaRenderer : Renderer {
+
+class SkiaRenderer(
+    private val textEngine: TextEngine
+) : Renderer {
+
     override fun render(
-        canvas: org.jetbrains.skia.Canvas,
-        root: com.foam.app.core.node.Node,
+        canvas: Canvas,
+        root: Node,
         scale: Float
     ) {
+
         renderNode(
             canvas,
             root,
@@ -20,21 +28,32 @@ class SkiaRenderer : Renderer {
         )
     }
 
+
     private fun renderNode(
         canvas: Canvas,
         node: Node,
         scale: Float
     ) {
 
-        if (node is ElementNode) {
-            drawElement(
-                canvas,
-                node,
-                scale
-            )
+        when (node) {
+
+            is ElementNode ->
+                drawElement(
+                    canvas,
+                    node,
+                    scale
+                )
+
+            is TextNode ->
+                drawText(
+                    canvas,
+                    node,
+                    scale
+                )
         }
 
         for (child in node.children) {
+
             renderNode(
                 canvas,
                 child,
@@ -42,6 +61,24 @@ class SkiaRenderer : Renderer {
             )
         }
     }
+
+
+    private fun drawText(
+        canvas: Canvas,
+        node: TextNode,
+        scale: Float
+    ) {
+
+        textEngine.paint(
+            canvas,
+            node,
+            node.layout.x,
+            node.layout.y,
+            Float.POSITIVE_INFINITY,
+            scale
+        )
+    }
+
 
     private fun drawElement(
         canvas: Canvas,

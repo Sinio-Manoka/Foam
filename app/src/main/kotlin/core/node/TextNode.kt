@@ -1,5 +1,10 @@
 package com.foam.app.core.node
 
-class TextNode (
+import com.foam.app.text.TextLayout
+
+class TextNode(
     val text: String
-) : Node()
+) : Node() {
+
+    var textLayout: TextLayout? = null
+}
