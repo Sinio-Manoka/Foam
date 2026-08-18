@@ -1,7 +1,7 @@
 package com.foam.app
 
-import com.foam.app.dsl.Button
-import com.foam.app.dsl.Text
+import com.foam.app.dsl.components.Button
+import com.foam.app.dsl.components.Text
 import com.foam.app.runtime.FoamApp
 
 class App : FoamApp(

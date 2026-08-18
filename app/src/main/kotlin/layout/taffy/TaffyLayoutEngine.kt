@@ -3,8 +3,10 @@ package com.foam.app.layout.taffy
 import com.foam.app.core.node.Node
 import com.foam.app.core.node.TextNode
 import com.foam.app.layout.LayoutEngine
-import com.foam.app.style.Display
-import com.foam.app.style.JustifyContent
+import com.foam.app.style.flex.AlignItems as FoamAlignItems
+import com.foam.app.style.flex.Display
+import com.foam.app.style.flex.FlexDirection as FoamFlexDirection
+import com.foam.app.style.flex.JustifyContent
 import com.foam.app.text.TextEngine
 import dev.vfyjxf.taffy.geometry.TaffyRect
 
@@ -143,9 +145,9 @@ class TaffyLayoutEngine(
 
                         flexDirection =
                             when (style.flexDirection) {
-                                com.foam.app.style.FlexDirection.ROW -> FlexDirection.ROW
+                                FoamFlexDirection.ROW -> FlexDirection.ROW
 
-                                com.foam.app.style.FlexDirection.COLUMN -> FlexDirection.COLUMN
+                                FoamFlexDirection.COLUMN -> FlexDirection.COLUMN
                             }
 
                         justifyContent =
@@ -161,10 +163,10 @@ class TaffyLayoutEngine(
 
                         alignItems =
                             when(style.alignItems) {
-                                com.foam.app.style.AlignItems.CENTER -> AlignItems.CENTER
-                                com.foam.app.style.AlignItems.END -> AlignItems.END
-                                com.foam.app.style.AlignItems.START -> AlignItems.START
-                                com.foam.app.style.AlignItems.STRETCH -> AlignItems.STRETCH
+                                FoamAlignItems.CENTER -> AlignItems.CENTER
+                                FoamAlignItems.END -> AlignItems.END
+                                FoamAlignItems.START -> AlignItems.START
+                                FoamAlignItems.STRETCH -> AlignItems.STRETCH
                             }
 
                         margin =

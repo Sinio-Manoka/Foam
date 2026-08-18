@@ -1,31 +1,9 @@
 package com.foam.app.style
 
-enum class Display {
-    FLEX,
-    BLOCK,
-    NONE
-}
-
-enum class FlexDirection {
-    ROW,
-    COLUMN
-}
-
-enum class JustifyContent {
-    START,
-    CENTER,
-    END,
-    SPACE_BETWEEN,
-    SPACE_AROUND,
-    SPACE_EVENLY
-}
-
-enum class AlignItems {
-    START,
-    CENTER,
-    END,
-    STRETCH
-}
+import com.foam.app.style.flex.AlignItems
+import com.foam.app.style.flex.Display
+import com.foam.app.style.flex.FlexDirection
+import com.foam.app.style.flex.JustifyContent
 
 data class ComputedStyle(
     var width: Float? = null,
@@ -53,4 +31,47 @@ data class ComputedStyle(
     var paddingRight: Float = 0f,
     var paddingBottom: Float = 0f,
     var paddingLeft: Float = 0f
-)
+) {
+
+    /**
+     * Overlay [inline] on top of this style, applying inline overrides.
+     *
+     * Semantics:
+     *  - nullable fields (e.g. [width]) are overridden when the inline value
+     *    is also non-null.
+     *  - non-null fields (numeric) override unconditionally.
+     *  - this lets the DSL fluent modifiers (`.padding(8)`, `.frame(...)`)
+     *    take effect, while leaving CSS classes untouched when the inline
+     *    side doesn't mention them.
+     */
+    fun mergeInline(
+        inline: ComputedStyle
+    ) {
+
+        if (inline.width != null) width = inline.width
+        if (inline.height != null) height = inline.height
+
+        gap = inline.gap
+
+        backgroundColor = inline.backgroundColor
+        borderRadius = inline.borderRadius
+
+        fontSize = inline.fontSize
+        textColor = inline.textColor
+
+        display = inline.display
+        flexDirection = inline.flexDirection
+        justifyContent = inline.justifyContent
+        alignItems = inline.alignItems
+
+        marginTop = inline.marginTop
+        marginRight = inline.marginRight
+        marginBottom = inline.marginBottom
+        marginLeft = inline.marginLeft
+
+        paddingTop = inline.paddingTop
+        paddingRight = inline.paddingRight
+        paddingBottom = inline.paddingBottom
+        paddingLeft = inline.paddingLeft
+    }
+}

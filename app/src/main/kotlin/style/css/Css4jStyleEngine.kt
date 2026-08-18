@@ -1,11 +1,11 @@
 package com.foam.app.style.css
 
 import com.foam.app.core.node.Node
-import com.foam.app.style.AlignItems
 import com.foam.app.style.ComputedStyle
-import com.foam.app.style.Display
-import com.foam.app.style.FlexDirection
-import com.foam.app.style.JustifyContent
+import com.foam.app.style.flex.AlignItems
+import com.foam.app.style.flex.Display
+import com.foam.app.style.flex.FlexDirection
+import com.foam.app.style.flex.JustifyContent
 import io.sf.carte.doc.dom.CSSDOMImplementation
 import io.sf.carte.doc.style.css.CSSStyleSheet
 import io.sf.carte.doc.style.css.om.StyleRule
@@ -44,6 +44,7 @@ class Css4jStyleEngine(
                 style
             )
         }
+        style.mergeInline(node.inlineStyle)
         node.computedStyle = style
     }
     private fun applyRule(
