@@ -1,17 +1,22 @@
 package com.foam.app
 
+import com.foam.app.dsl.components.Button
 import com.foam.app.dsl.components.Text
 import com.foam.app.dsl.components.VStack
 import com.foam.app.runtime.FoamApp
 
 /**
- * Foam demo:
+ * Foam demo: two simple buttons centered in the middle of the window,
+ * separated by a gap, each with a short label.
  *
- * A black stage with two large rounded boxes side-by-side. The left one
- * is blue with text aligned to the top-left corner. The right one is
- * purple with text aligned to the bottom-right corner. Layout (centering,
- * gap, flex direction) and per-corner text alignment both come from the
- * stylesheet.
+ * - First button is blue (`.button .primary`) with English text
+ *   ("Continue").
+ * - Second button is purple (`.button .secondary`) with Arabic text
+ *   ("يكمل", "continue" in Arabic), styled with `.arabic` so it
+ *   renders right-to-left and uses a slightly larger font.
+ *
+ * Layout — centering, gap, flex direction — is driven entirely by
+ * the stylesheet (`app.css`).
  */
 class App : FoamApp(
 
@@ -27,29 +32,19 @@ class App : FoamApp(
 
         VStack("stage") {
 
-            VStack("box", "box-a") {
+            Button("button", "primary") {
 
                 Text(
-                    "Hello",
-                    "box-label"
-                )
-
-                Text(
-                    "from the top-left corner",
-                    "box-caption"
+                    "Continue",
+                    "button-label"
                 )
             }
 
-            VStack("box", "box-b") {
+            Button("button", "secondary") {
 
                 Text(
-                    "World",
-                    "box-label"
-                )
-
-                Text(
-                    "from the bottom-right corner",
-                    "box-caption"
+                    "\u064A\u0643\u0645\u0644",
+                    "arabic"
                 )
             }
         }
