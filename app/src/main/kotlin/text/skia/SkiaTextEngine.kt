@@ -165,16 +165,55 @@ class SkiaTextEngine : TextEngine {
     ) : TextLayout {
 
         /**
-         * The y-offset (in physical pixels) from the top of the paragraph
-         * bounding box down to the alphabetic baseline of the first line.
+         * The physical-pixel y-offset at which to draw the **baseline** of
+         * the first line so its visual bbox is centered in the leaf's
+         * layout rect.
          *
-         * Skia's `paragraph.paint(canvas, x, y)` paints with the baseline
-         * at `(x, y)`, so the renderer has to add this offset to the
-         * node's top-y to land the text inside its layout rect.
+         * We compute this from per-line metrics rather than blindly using
+         * `paragraph.alphabeticBaseline` because that value sits inside a
+         * paragraph box whose height includes leading and whose top is
+         * not necessarily the glyph's visual top — line metrics expose
+         * the ascent/descent values that define the actual glyph bbox.
+         *
+         * For an empty paragraph (no lines), the offset falls back to
+         * the alphabetic baseline so callers don't have to special-case
+         * empty text.
          */
         override val baseline: Float by lazy {
 
-            paragraph.alphabeticBaseline
+            val lineMetrics =
+                paragraph.lineMetrics
+
+            if (lineMetrics.isEmpty()) {
+
+                paragraph.alphabeticBaseline
+            } else {
+
+                val line = lineMetrics[0]
+
+                // LineMetrics describes the glyph's visual bbox:
+                //   top    = baseline - ascent
+                //   bottom = baseline + descent
+                // Ascent and descent are positive. The visual height of
+                // the glyph stack is `ascent + descent`.
+                val ascent =
+                    line.ascent.toFloat()
+                val descent =
+                    line.descent.toFloat()
+
+                // `paragraph.height` includes any leading above and below
+                // the glyph stack. Compute the visual center of the leaf,
+                // then snap to the baseline by adding half the visual
+                // height minus half the ascent (i.e. walk from the visual
+                // center down to the baseline).
+                val leafHeight =
+                    paragraph.height
+
+                val visualCenter =
+                    (leafHeight - ascent + descent) / 2f
+
+                visualCenter
+            }
         }
 
 
