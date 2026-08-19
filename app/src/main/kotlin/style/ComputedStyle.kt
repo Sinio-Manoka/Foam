@@ -53,7 +53,7 @@ data class ComputedStyle(
 
         gap = inline.gap
 
-        backgroundColor = inline.backgroundColor
+        if (inline.backgroundColor != null) backgroundColor = inline.backgroundColor
         borderRadius = inline.borderRadius
 
         fontSize = inline.fontSize

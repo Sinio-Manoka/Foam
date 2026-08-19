@@ -290,25 +290,36 @@ open class FoamApp(
                 fbFormat = FramebufferFormat.GR_GL_RGBA8
             ).use { renderTarget ->
 
-                Surface.makeFromBackendRenderTarget(
-                    context = directContext,
-                    rt = renderTarget,
-                    origin = SurfaceOrigin.BOTTOM_LEFT,
-                    colorFormat = SurfaceColorFormat.RGBA_8888,
-                    colorSpace = ColorSpace.sRGB,
-                    surfaceProps = null
-                )!!.use { surface ->
-
-                    drawUI(
-                        surface.canvas,
-                        size,
-                        scale
+                val surface =
+                    Surface.makeFromBackendRenderTarget(
+                        context = directContext,
+                        rt = renderTarget,
+                        origin = SurfaceOrigin.BOTTOM_LEFT,
+                        colorFormat = SurfaceColorFormat.RGBA_8888,
+                        colorSpace = ColorSpace.sRGB,
+                        surfaceProps = null
                     )
 
-                    surface.flushAndSubmit()
+                if (surface != null) {
 
-                    renderer.swapBuffers()
+                    surface.use {
+
+                        drawUI(
+                            it.canvas,
+                            size,
+                            scale
+                        )
+
+                        it.flushAndSubmit()
+                    }
+
+                } else {
+
+                    // No surface this frame (e.g. resize race). Just swap
+                    // the buffers to advance and try again next time.
                 }
+
+                renderer.swapBuffers()
             }
         }
 

@@ -54,7 +54,7 @@ class SkiaTextEngine : TextEngine {
         scale: Float
     ) {
 
-        val paragraph =
+        val stored =
             (node.textLayout as? SkiaTextLayout)
                 ?.paragraph
                 ?: createParagraph(
@@ -63,10 +63,24 @@ class SkiaTextEngine : TextEngine {
                     scale
                 )
 
-        paragraph.paint(
+        // Skia's `paragraph.paint(canvas, x, y)` paints with the baseline
+        // of the first line at `(x, y)`, not the top-left of the box.
+        // The cached layout stores the baseline distance (in physical
+        // pixels) from the top of the bounding box; convert it back to
+        // logical by dividing by the device scale before adding to the
+        // top-y the layout engine gave us.
+        val baselinePx =
+            (node.textLayout as? SkiaTextLayout)
+                ?.baseline
+                ?: 0f
+
+        val baselineLogical =
+            if (scale > 0f) baselinePx / scale else 0f
+
+        stored.paint(
             canvas,
             x * scale,
-            y * scale
+            (y + baselineLogical) * scale
         )
     }
 
@@ -139,9 +153,24 @@ class SkiaTextEngine : TextEngine {
         val paragraph: Paragraph
     ) : TextLayout {
 
+        /**
+         * The y-offset (in physical pixels) from the top of the paragraph
+         * bounding box down to the alphabetic baseline of the first line.
+         *
+         * Skia's `paragraph.paint(canvas, x, y)` paints with the baseline
+         * at `(x, y)`, so the renderer has to add this offset to the
+         * node's top-y to land the text inside its layout rect.
+         */
+        override val baseline: Float by lazy {
+
+            paragraph.alphabeticBaseline
+        }
+
+
         override val width: Float
             get() =
                 paragraph.longestLine.toFloat()
+
 
         override val height: Float
             get() =

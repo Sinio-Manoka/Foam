@@ -22,7 +22,6 @@ import dev.vfyjxf.taffy.style.TaffyDisplay
 import dev.vfyjxf.taffy.style.TaffyStyle
 import dev.vfyjxf.taffy.tree.NodeId
 import dev.vfyjxf.taffy.tree.TaffyTree
-import org.w3c.dom.css.Rect
 
 
 class TaffyLayoutEngine(
