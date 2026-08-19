@@ -1,12 +1,14 @@
 package com.foam.app.text.skia
 
 import com.foam.app.core.node.TextNode
+import com.foam.app.style.text.Direction
 import com.foam.app.text.TextEngine
 import com.foam.app.text.TextLayout
 
 import org.jetbrains.skia.Canvas
 import org.jetbrains.skia.FontMgr
 import org.jetbrains.skia.paragraph.Alignment
+import org.jetbrains.skia.paragraph.Direction as SkiaDirection
 import org.jetbrains.skia.paragraph.FontCollection
 import org.jetbrains.skia.paragraph.Paragraph
 import org.jetbrains.skia.paragraph.ParagraphBuilder
@@ -121,6 +123,15 @@ class SkiaTextEngine : TextEngine {
 
                 ellipsis =
                     null
+
+                // Direction: CSS `direction: rtl` maps to RTL bidi
+                // shaping so Arabic / Hebrew text reads naturally. ICU
+                // handles the per-glyph bidi resolution automatically.
+                direction =
+                    when (style.direction) {
+                        Direction.LTR -> SkiaDirection.LTR
+                        Direction.RTL -> SkiaDirection.RTL
+                    }
             }
 
         return ParagraphBuilder(

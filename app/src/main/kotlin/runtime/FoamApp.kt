@@ -337,11 +337,7 @@ open class FoamApp(
                 windowSize.height / scale
 
             canvas.clear(
-                Color.makeRGB(
-                    245,
-                    245,
-                    247
-                )
+                Color.WHITE
             )
 
             runtime.renderFrame(

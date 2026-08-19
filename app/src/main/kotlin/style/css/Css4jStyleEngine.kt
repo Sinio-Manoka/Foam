@@ -6,6 +6,7 @@ import com.foam.app.style.flex.AlignItems
 import com.foam.app.style.flex.Display
 import com.foam.app.style.flex.FlexDirection
 import com.foam.app.style.flex.JustifyContent
+import com.foam.app.style.text.Direction
 import io.sf.carte.doc.dom.CSSDOMImplementation
 import io.sf.carte.doc.style.css.CSSStyleSheet
 import io.sf.carte.doc.style.css.om.StyleRule
@@ -219,6 +220,17 @@ class Css4jStyleEngine(
             ?.let {
                 style.textColor =
                     cssColor(it)
+            }
+
+        declaration
+            .getPropertyValue("direction")
+            .takeIf { it.isNotBlank() }
+            ?.let {
+                style.direction =
+                    when (it.trim()) {
+                        "rtl" -> Direction.RTL
+                        else -> Direction.LTR
+                    }
             }
     }
     private fun findRule(selector: String): StyleRule? {
